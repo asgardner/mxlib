@@ -101,8 +101,10 @@ int speckleAmpPSD( std::vector<realT> & spFreq,                        ///< [out
    realT fmVar = sigproc::psdVar( freq, fmPSD);
    //and the noise variance
    realT nVar = sigproc::psdVar( freq, nPSD);
-   
+
+#ifdef __OPENMP   
    #pragma omp parallel
+#endif
    {
       //Filters for imposing the PSDs
       mx::sigproc::psdFilter<realT,1> filt;
@@ -145,11 +147,13 @@ int speckleAmpPSD( std::vector<realT> & spFreq,                        ///< [out
       //The temporary periodogram
       std::vector<realT> tpgram(avgPgram.size());//spPSD.size());
 
+#ifdef __OPENMP
       #pragma omp for
+#endif
       for(int k=0; k < N; ++k)
       {
          //Generate the time-series
-         for(int i=0; i< psd2.size(); ++i) 
+         for(unsigned int i=0; i< psd2.size(); ++i) 
          {
             fm_n[i] = normVar;
             N_n[i] = normVar;
@@ -223,7 +227,9 @@ int speckleAmpPSD( std::vector<realT> & spFreq,                        ///< [out
          if(!noPSD) avgPgram(tpgram, vn);
          
          //Accumulate
+#ifdef __OPENMP
          #pragma omp critical
+#endif
          {
             if( bins != nullptr && vars != nullptr) math::vectorBinMeans( means, *bins, vn);
             for(size_t i=0; i< spPSD.size(); ++i) spPSD[i] += tpgram[i];
@@ -235,7 +241,7 @@ int speckleAmpPSD( std::vector<realT> & spFreq,                        ///< [out
    if(!noPSD)
    {
       //-- Calculate frequency grid (which is maybe not identical to input freq)
-      realT df = (1.0)/(2.0*spPSD.size()*dt);
+      realT df __attribute__((unused)) = (1.0)/(2.0*spPSD.size()*dt);
       spFreq.resize(spPSD.size());
       for(size_t i =0; i< spFreq.size(); ++i) 
       {

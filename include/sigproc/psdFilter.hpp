@@ -604,7 +604,7 @@ int psdFilter<realT,rank>::setSize(typename std::enable_if<crank==1>::type* )
       return -1;
    }
    
-   if( m_rows == m_psdSqrt->size() )
+   if( (unsigned int) m_rows == m_psdSqrt->size() )
    {
       return 0;
    }
@@ -891,23 +891,23 @@ int psdFilter<realT,rank>::filter( realArrayT & noise,
                                    typename std::enable_if<crank==1>::type*
                                  ) const
 {
-   for(int nn=0; nn< noise.size(); ++nn) m_ftWork[nn] = complexT(noise[nn],0);
+   for(unsigned int nn=0; nn< noise.size(); ++nn) m_ftWork[nn] = complexT(noise[nn],0);
    
    //Transform complex noise to Fourier domain.
    m_fft_fwd(m_ftWork.data(), m_ftWork.data() );
    
    //Apply the filter.
-   for(int nn=0;nn<m_ftWork.size();++nn) m_ftWork[nn] *= (*m_psdSqrt)[nn];
+   for(unsigned int nn=0;nn<m_ftWork.size();++nn) m_ftWork[nn] *= (*m_psdSqrt)[nn];
         
    m_fft_back(m_ftWork.data(), m_ftWork.data());
    
    //Now take the real part, and normalize.
    realT norm = sqrt(noise.size()/m_dFreq1);
-   for(int nn=0;nn<m_ftWork.size();++nn) noise[nn] = m_ftWork[nn].real()/norm;
+   for(unsigned int nn=0;nn<m_ftWork.size();++nn) noise[nn] = m_ftWork[nn].real()/norm;
    
    if(noiseIm != nullptr)
    {
-      for(int nn=0;nn<m_ftWork.size();++nn) (*noiseIm)[nn] = m_ftWork[nn].imag()/norm;
+      for(unsigned int nn=0;nn<m_ftWork.size();++nn) (*noiseIm)[nn] = m_ftWork[nn].imag()/norm;
    }
    
    return 0;

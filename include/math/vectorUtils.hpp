@@ -69,7 +69,7 @@ void vectorScale( vectorT & vec,  ///< [out] the vector to fill in, can be pre-a
 
    if(N > 0) vec.resize(N);
 
-   for(int i=0;i<vec.size(); ++i) vec[i] = i*scale + offset;
+   for(unsigned int i=0;i<vec.size(); ++i) vec[i] = i*scale + offset;
 }
 
 

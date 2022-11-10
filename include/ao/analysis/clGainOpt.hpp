@@ -539,7 +539,7 @@ template<typename realT>
 void clGainOpt<realT>::f(realT * newF, size_t nF)
 {
    _f.resize(nF);
-   for(int i=0; i< nF; ++i) _f[i] = newF[i];
+   for(unsigned int i=0; i< nF; ++i) _f[i] = newF[i];
 
    _fChanged = true;
    _changed = true;
@@ -701,7 +701,7 @@ std::complex<realT> clGainOpt<realT>::olXfer(int fi, complexT & H_dm, complexT &
          {
             std::cerr << i << " " << _f[fi] << " " << s << " " << expsT << " " << _H_wfs[i] << " " << _H_dm[i] << " " << _H_con[i] << " " << _H_del[i] << "\n";
             //exit(0);
-         }/**/
+         }*/
 
       }
 
@@ -1036,7 +1036,7 @@ template<typename realT>
 int clGainOpt<realT>::pseudoOpenLoop( std::vector<realT> & PSD, realT g)
 {
    realT e;
-   for(int f=0; f< _f.size(); ++f)
+   for(unsigned int f=0; f< _f.size(); ++f)
    {
       e = clETF2(f, g);
 

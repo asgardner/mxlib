@@ -877,7 +877,7 @@ void augment1SidedPSDFreq( std::vector<T> & freqTwoSided, ///< [out] on return c
       freqTwoSided[0] = freqOneSided[0]; //0
    }
 
-   int i;
+   unsigned int i = 0;
    for(i=0; i < freqOneSided.size() - 1 - (1-needZero); ++i)
    {
       freqTwoSided[i + 1] = freqOneSided[i + (1-needZero) ];

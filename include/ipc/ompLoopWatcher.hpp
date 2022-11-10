@@ -152,7 +152,9 @@ public:
      */
    void increment()
    {
+#ifdef __OPENMP
       #pragma omp critical
+#endif
       _increment();
    }
 
@@ -161,7 +163,9 @@ public:
      */
    void outputStatus()
    {
+#ifdef __OPENMP
       #pragma omp critical
+#endif
       _outputStatus();
    }
 
@@ -170,7 +174,9 @@ public:
      */
    void incrementAndOutputStatus()
    {
+#ifdef __OPENMP
       #pragma omp critical
+#endif
       {
          _increment();
          _outputStatus();

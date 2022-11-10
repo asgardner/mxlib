@@ -41,8 +41,10 @@ void varmapToImage( imageT & im, ///< [out] is the intensity image, resized to m
    
    int psf_i, psf_j;
    floatT psfVal;
-   
+
+#ifdef __OPENMP   
    #pragma omp parallel for
+#endif
    for(int i=0; i< im.rows(); ++i)
    {
       for(int j=0; j< im.cols(); ++j)

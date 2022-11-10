@@ -1278,7 +1278,7 @@ void aoSystem<realT, inputSpectT, iosT>::npix_wfs( int idx,
                                                    realT npix
                                                  )
 {
-   if(m_npix_wfs.size() < idx+1)
+   if(m_npix_wfs.size() < (unsigned int)(idx+1))
    {
       mxThrowException(err::sizeerr, "aoSystem::npix_wfs", "idx larger than m_npix_wfs");
    }
@@ -1324,7 +1324,7 @@ void aoSystem<realT, inputSpectT, iosT>::ron_wfs( int idx,
                                                   realT nron
                                                 )
 {
-   if(m_ron_wfs.size() < idx+1)
+   if(m_ron_wfs.size() < (unsigned int)(idx+1))
    {
       mxThrowException(err::sizeerr, "aoSystem::ron_wfs", "idx larger than m_ron_wfs");
    }
@@ -1371,7 +1371,7 @@ void aoSystem<realT, inputSpectT, iosT>::Fbg( int idx,
                                               realT fbg
                                              )
 {
-   if(m_Fbg.size() < idx+1)
+   if(m_Fbg.size() < (unsigned int)(idx+1))
    {
       mxThrowException(err::sizeerr, "aoSyste,::Fbg", "idx larger than m_Fbg");
    }
@@ -1666,7 +1666,7 @@ realT aoSystem<realT, inputSpectT, iosT>::Fg()
 
 template<typename realT, class inputSpectT, typename iosT>
 realT aoSystem<realT, inputSpectT, iosT>::signal2Noise2( realT & tau_wfs,
-                                                         realT d,
+                                                         realT d __attribute((unused)),
                                                          int b
                                                        )
 {      
@@ -2068,7 +2068,9 @@ realT aoSystem<realT, inputSpectT, iosT>::d_opt()
    }
    
    realT d = m_d_min;
+   #pragma GCC diagnostic ignored "-Wunused-but-set-variable"
    realT best_d = d;
+   #pragma GCC diagnostic pop
    int m = m_D/(2*d);
    int n = 0;
 
@@ -2077,13 +2079,15 @@ realT aoSystem<realT, inputSpectT, iosT>::d_opt()
       if(m_npix_wfs.size() > 1) //Optimize over the binning modes
       {
          int best_idx = 0;
+         #pragma GCC diagnostic ignored "-Wunused-but-set-variable"
          realT best_d = m_d_min;
-
+         #pragma GCC diagnostic pop
+   
          realT best_aoerr = measurementError(m,n,m_d_min, 0) + timeDelayError(m,n,m_d_min, 0);
          realT ferr = fittingError(m, n);
          if(ferr < best_aoerr) best_aoerr = ferr;
 
-         for(int b=0; b < m_npix_wfs.size(); ++b)
+         for(unsigned int b=0; b < m_npix_wfs.size(); ++b)
          {
             d = m_d_min;
 
@@ -2351,8 +2355,8 @@ void aoSystem<realT, inputSpectT, iosT>::C2Map( imageT & im )
 }
 
 template<typename realT, class inputSpectT, typename iosT>
-realT aoSystem<realT, inputSpectT, iosT>::C3var( realT m, 
-                                                 realT n
+realT aoSystem<realT, inputSpectT, iosT>::C3var( realT m __attribute__((unused)), 
+                                                 realT n __attribute__((unused))
                                                )
 {
    return 0;//measurementError(m, n) + timeDelayError(m,n);

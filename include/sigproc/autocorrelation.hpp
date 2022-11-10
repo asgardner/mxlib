@@ -51,8 +51,9 @@ void autocorrelation( T * ac, ///< [out] is the pre-allocated array of length Na
                       size_t Nsig ///< [in] is the length of the input time-series
                     )
 {
-
+#ifdef __OPENMP
    #pragma omp parallel for
+#endif
    for(int i=0; i< Nac; ++i)
    {
       ac[i] = 0;

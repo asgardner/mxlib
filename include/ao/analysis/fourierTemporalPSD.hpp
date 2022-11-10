@@ -608,19 +608,25 @@ int fourierTemporalPSD<realT, aosysT>::m_multiLayerPSD( std::vector<realT> & PSD
                                                        isParallel<true> parallel )
 {
    static_cast<void>(parallel);
-   
+
+#ifdef __OPENMP   
    #pragma omp parallel
+#endif
    {
       //Records each layer PSD
       std::vector<realT> single_PSD(freq.size());
 
+#ifdef __OPENMP
       #pragma omp for
+#endif
       for(size_t i=0; i< m_aosys->atm.n_layers(); ++i)
       {
          singleLayerPSD(single_PSD, freq, m, n, i, p, fmax);
 
          //Now add the single layer PSD to the overall PSD, weighted by Cn2
+#ifdef __OPENMP
          #pragma omp critical
+#endif
          for(size_t j=0; j<freq.size(); ++j)
          {
            PSD[j] += m_aosys->atm.layer_Cn2(i)*single_PSD[j];
@@ -738,7 +744,9 @@ void fourierTemporalPSD<realT, aosysT>::makePSDGrid( const std::string & dir,
 
    ipc::ompLoopWatcher<> watcher(nLoops, std::cout);
 
+#ifdef __OPENMP      
    #pragma omp parallel
+#endif
    {
       std::vector<realT> PSD;
       PSD.resize(N);
@@ -746,7 +754,9 @@ void fourierTemporalPSD<realT, aosysT>::makePSDGrid( const std::string & dir,
 
       int m, n;
 
+#ifdef __OPENMP
       #pragma omp for
+#endif
       for(size_t i=0; i<nLoops; ++i)
       {
          m = spf[i*2].m;
@@ -874,7 +884,9 @@ int fourierTemporalPSD<realT, aosysT>::analyzePSDGrid( const std::string & subDi
 
    for(size_t s = 0; s < mags.size(); ++s)
    {
+#ifdef __OPENMP      
       #pragma omp parallel
+#endif
       {
          realT localMag = mags[s];
 
@@ -882,7 +894,7 @@ int fourierTemporalPSD<realT, aosysT>::analyzePSDGrid( const std::string & subDi
 
          realT gopt, var;
 
-         realT gopt_lp, var_lp;
+         realT gopt_lp = 0.0, var_lp;
 
          std::vector<realT> tfreq; //The frequency scale of the PSDs
          std::vector<realT> tPSDp; //The open-loop turbulence PSD for a Fourier mode
@@ -951,7 +963,9 @@ int fourierTemporalPSD<realT, aosysT>::analyzePSDGrid( const std::string & subDi
          
          //want to schedule dynamic with small chunks so maximal processor usage,
          //otherwise we can end up with a small number of cores being used at the end
+#ifdef __OPENMP      
          #pragma omp for schedule(dynamic, 5)
+#endif
          for(size_t i=0; i<nModes; ++i)
          {
             //Determine the spatial frequency at this step
@@ -979,7 +993,7 @@ int fourierTemporalPSD<realT, aosysT>::analyzePSDGrid( const std::string & subDi
             else
             {
          
-               realT k = sqrt(m*m + n*n)/m_aosys->D();
+               realT k __attribute__((unused)) = sqrt(m*m + n*n)/m_aosys->D();
                
                //Get the WFS noise PSD (which is already resized to match tfreq)
                wfsNoisePSD<realT>( tPSDn, m_aosys->beta_p(m,n), m_aosys->Fg(localMag), tauWFS, m_aosys->npix_wfs((size_t) 0), m_aosys->Fbg((size_t) 0), m_aosys->ron_wfs((size_t) 0));
@@ -1379,7 +1393,7 @@ int fourierTemporalPSD<realT, aosysT>::intensityPSD( const std::string & subDir,
                                                      const std::string & CvdPath, // path to the covariance decomposition
                                                      int mnMax,
                                                      int mnCon,
-                                                     const std::string & si_or_lp,
+                                                     const std::string & si_or_lp __attribute__((unused)),
                                                      std::vector<realT> & mags,
                                                      int lifetimeTrials,
                                                      bool writePSDs
@@ -1412,7 +1426,7 @@ int fourierTemporalPSD<realT, aosysT>::intensityPSD( const std::string & subDir,
 
    realT fs = 1.0/m_aosys->tauWFS();
    realT tauWFS = m_aosys->tauWFS();
-   realT deltaTau = m_aosys->deltaTau();
+   realT deltaTau __attribute__((unused)) = m_aosys->deltaTau();
    
    //** Get the Fourier Grid
    std::vector<sigproc::fourierModeDef> fms;
@@ -1605,7 +1619,7 @@ int fourierTemporalPSD<realT, aosysT>::intensityPSD( const std::string & subDir,
          }
          else
          {
-            for(int q=0;q<ETFsi.size();++q)
+            for(unsigned int q=0;q<ETFsi.size();++q)
             {
                ETFsi[i][q] = 1;
                NTFsi[i][q] = 0;
@@ -1631,8 +1645,10 @@ int fourierTemporalPSD<realT, aosysT>::intensityPSD( const std::string & subDir,
          spPSDslp[pp].resize(tavgPgram.size());
          for(size_t nn=0; nn < spPSDslp[pp].size(); ++nn) spPSDslp[pp][nn] = 0;
       }
-      
+
+#ifdef __OPENMP      
       #pragma omp parallel
+#endif
       {
          //Normally distributed random numbers
          math::normDistT<realT> normVar;
@@ -1711,7 +1727,9 @@ int fourierTemporalPSD<realT, aosysT>::intensityPSD( const std::string & subDir,
          psf /= psf.maxCoeff();
             
          //Here's where the big loop of n-trials should start
+#ifdef __OPENMP
          #pragma omp for
+#endif
          for(int zz=0; zz<lifetimeTrials; ++zz)
          {
             std::complex<realT> scale = exp( std::complex<realT>(0, math::half_pi<realT>() ))/std::complex<realT>((tform1.size()),0) ;
@@ -1810,7 +1828,7 @@ int fourierTemporalPSD<realT, aosysT>::intensityPSD( const std::string & subDir,
                fftF(tform2.data(), htsCorr[2*pp+1].data());
                
                //Make some noise
-               for(int nn=0; nn < sz2Sided; ++nn) 
+               for(unsigned int nn=0; nn < sz2Sided; ++nn) 
                {
                   N_n[nn] = normVar;
                   N_nm[nn] = normVar;
@@ -1859,7 +1877,7 @@ int fourierTemporalPSD<realT, aosysT>::intensityPSD( const std::string & subDir,
                fftB(N_n.data(), Ntform1.data());
                fftB(N_nm.data(), Ntform2.data());
                
-               for(int i= 0; i< hts[2*pp].size(); ++i)
+               for(unsigned int i= 0; i< hts[2*pp].size(); ++i)
                {
                   realT h1 = htsCorr[2*pp][i]+N_n[i];
                   realT h2 = htsCorr[2*pp+1][i]+N_nm[i];
@@ -1873,7 +1891,7 @@ int fourierTemporalPSD<realT, aosysT>::intensityPSD( const std::string & subDir,
                fftB(N_n.data(), Ntform1lp.data());
                fftB(N_nm.data(), Ntform2lp.data());
 
-               for(int i= 0; i< hts[2*pp].size(); ++i)
+               for(unsigned int i= 0; i< hts[2*pp].size(); ++i)
                {
                   realT h1 = htsCorr[2*pp][i]+N_n[i];
                   realT h2 = htsCorr[2*pp+1][i]+N_nm[i];
@@ -1921,8 +1939,8 @@ int fourierTemporalPSD<realT, aosysT>::intensityPSD( const std::string & subDir,
                mnlp /= speckAmplp.size();
                
                //mean subtract
-               for(int i=0; i<speckAmp.size(); ++i) speckAmp[i] -= mn;
-               for(int i=0; i<speckAmplp.size(); ++i) speckAmplp[i] -= mnlp;
+               for(unsigned int i=0; i<speckAmp.size(); ++i) speckAmp[i] -= mn;
+               for(unsigned int i=0; i<speckAmplp.size(); ++i) speckAmplp[i] -= mnlp;
          
                //Calculate PSD of the speckle amplitude
                avgPgram(tpgram, speckAmp);

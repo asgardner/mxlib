@@ -266,7 +266,9 @@ void fftT<inputT,outputT,rank,0>::doPlan(const meta::trueFalseT<false> & inPlace
    if(m_dir == MXFFT_BACKWARD) pdir = FFTW_BACKWARD;
    
    #ifndef MX_FFTW_NOOMP
+#ifdef __OPENMP
    #pragma omp critical
+#endif
    #endif
    {//scope for pragma
       m_plan = fftw_plan_dft<inputT, outputT>( fftwDimVec<rank>(m_szX, m_szY, m_szZ), forplan1, forplan2,  pdir, FFTW_MEASURE);
@@ -296,7 +298,9 @@ void fftT<inputT,outputT,rank,0>::doPlan(const meta::trueFalseT<true> & inPlace)
    if(m_dir == MXFFT_BACKWARD) pdir = FFTW_BACKWARD;
 
    #ifndef MX_FFTW_NOOMP
+#ifdef __OPENMP
    #pragma omp critical
+#endif
    #endif
    {//scope for pragma
       m_plan = fftw_plan_dft<inputT, outputT>( fftwDimVec<rank>(m_szX, m_szY, m_szZ),  reinterpret_cast<inputT*>(forplan), reinterpret_cast<outputT*>(forplan),  pdir, FFTW_MEASURE);

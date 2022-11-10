@@ -37,7 +37,7 @@ const char * mxlib_comp_current_branch();
 
 const char * mxlib_comp_current_sha1();
 
-const bool mxlib_comp_repo_modified();
+bool mxlib_comp_repo_modified();
 
 ///Dump the current git status of the library to a stream
 /** Prints the current SHA1 hash and whether or not the library
