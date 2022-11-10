@@ -70,7 +70,7 @@ double r1, r2, val;
 /* model to be fitted to measurements: x_i = p[0]*exp(-p[1]*i) + p[2], i=0...n-1 */
 void expfunc(double *p, double *x, int m, int n, void *data)
 {
-register int i;
+int i;
 
   for(i=0; i<n; ++i){
     x[i]=p[0]*exp(-p[1]*i) + p[2];
@@ -80,7 +80,7 @@ register int i;
 /* Jacobian of expfunc() */
 void jacexpfunc(double *p, double *jac, int m, int n, void *data)
 {   
-register int i, j;
+int i, j;
   
   /* fill Jacobian row by row */
   for(i=j=0; i<n; ++i){
@@ -94,7 +94,7 @@ int main()
 {
 const int n=40, m=3; // 40 measurements, 3 parameters
 double p[m], x[n], opts[LM_OPTS_SZ], info[LM_INFO_SZ];
-register int i;
+int i;
 int ret;
 
   /* generate some measurement using the exponential model with

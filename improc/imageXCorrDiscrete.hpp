@@ -1,5 +1,5 @@
 /** \file imageXCorrDiscrete.hpp
-  * \brief A class to register images using the discrete cross correlation.
+  * \brief A class to images using the discrete cross correlation.
   * \ingroup image_processing_files
   * \author Jared R. Males (jaredmales@gmail.com)
   *

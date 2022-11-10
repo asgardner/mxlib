@@ -1141,7 +1141,7 @@ int HCIobservation<_realT>::threshold( std::vector<std::string> & fileList,
       return -1;
    }
 
-   int origsize = fileList.size();
+   // ASG int origsize = fileList.size();
 
    std::vector<std::string> qfileNames;
    std::vector<realT> imQ;

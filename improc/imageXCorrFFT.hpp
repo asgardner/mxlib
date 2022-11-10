@@ -1,5 +1,5 @@
 /** \file imageXCorrFFT.hpp
-  * \brief A class to register images using the Fourier cross correlation with a peak fit.
+  * \brief A class to images using the Fourier cross correlation with a peak fit.
   * \ingroup image_processing_files
   * \author Jared R. Males (jaredmales@gmail.com)
   *

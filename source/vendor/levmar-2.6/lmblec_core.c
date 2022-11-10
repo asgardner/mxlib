@@ -84,8 +84,8 @@ static void LMBLEC_FUNC(LM_REAL *p, LM_REAL *hx, int m, int n, void *adata)
 {
 struct LMBLEC_DATA *data=(struct LMBLEC_DATA *)adata;
 int nn;
-register int i, j, *typ;
-register LM_REAL *lb, *ub, *w, tmp;
+int i, j, *typ;
+LM_REAL *lb, *ub, *w, tmp;
 
   nn=n-m;
   lb=data->lb;
@@ -117,8 +117,8 @@ static void LMBLEC_JACF(LM_REAL *p, LM_REAL *jac, int m, int n, void *adata)
 {
 struct LMBLEC_DATA *data=(struct LMBLEC_DATA *)adata;
 int nn, *typ;
-register int i, j;
-register LM_REAL *lb, *ub, *w, tmp;
+int i, j;
+LM_REAL *lb, *ub, *w, tmp;
 
   nn=n-m;
   lb=data->lb;
@@ -224,7 +224,7 @@ int LEVMAR_BLEC_DER(
   struct LMBLEC_DATA data;
   int ret;
   LM_REAL locinfo[LM_INFO_SZ];
-  register int i;
+  int i;
 
   if(!jacf){
     fprintf(stderr, RCAT("No function specified for computing the Jacobian in ", LEVMAR_BLEC_DER)
@@ -338,7 +338,7 @@ int LEVMAR_BLEC_DIF(
 {
   struct LMBLEC_DATA data;
   int ret;
-  register int i;
+  int i;
   LM_REAL locinfo[LM_INFO_SZ];
 
   if(!lb && !ub){

@@ -4,20 +4,216 @@ cmake_minimum_required(VERSION 3.23)
 find_package(Eigen3 CONFIG REQUIRED)
 find_package(MKL CONFIG REQUIRED)
 
-add_library(mx SHARED
+add_library(mx SHARED)
+
+target_sources(mx 
+    PRIVATE
     source/ao/analysis/aoAtmosphere.cpp
     source/ao/analysis/aoPSDs.cpp
     source/ao/analysis/aoSystem.cpp
     source/ao/analysis/clGainOpt.cpp
     source/ao/analysis/fourierTemporalPSD.cpp
     source/app/appConfigurator.cpp
-    # source/app/application.cpp
-    # source/app/clOptions.cpp
-    # source/app/ini.cpp
-    # source/app/optionparser.cpp
+    source/app/application.cpp
+    source/app/clOptions.cpp
+    source/app/ini.cpp
+    source/app/optionparser.cpp
+    source/improc/ADIDerotator.cpp
+    source/improc/ADIobservation.cpp
+    source/improc/HCIobservation.cpp
+    source/improc/imageUtils.cpp
+    source/improc/KLIPreduction.cpp
+    source/ioutils/fileUtils.cpp
+    source/ioutils/stringUtils.cpp
+    source/ioutils/textTable.cpp
+    source/ipc/processInterface.cpp
+    source/ipc/sharedMemSegment.cpp
+    source/math/templateBLAS.cpp
+    source/math/templateLapack.cpp
+    source/sigproc/zernike.cpp
+    source/sys/environment.cpp
+    source/sys/gitRepo.cpp
+    source/sys/timeUtils.cpp
+    PUBLIC FILE_SET HEADERS FILES
+    ao/analysis/aoAtmosphere.hpp
+    ao/analysis/aoConstants.hpp
+    ao/analysis/aoPSDs.hpp
+    ao/analysis/aoSystem.hpp
+    ao/analysis/aoWFS.hpp
+    ao/analysis/clAOLinearPredictor.hpp
+    ao/analysis/clGainOpt.hpp
+    ao/analysis/fourierCovariance.hpp
+    ao/analysis/fourierTemporalPSD.hpp
+    ao/analysis/jincFuncs.hpp
+    ao/analysis/speckleAmpPSD.hpp
+    ao/analysis/varmapToImage.hpp
+    ao/analysis/wfsNoisePSD.hpp
+    ao/aoPaths.hpp
+    ao/basis.hpp
+    ao/fourierBasis.hpp
+    ao/influenceFunctions.hpp
+    ao/pupil.hpp
+    ao/sim/ccdDetector.hpp
+    ao/sim/deformableMirror.hpp
+    ao/sim/directPhaseReconstructorD.hpp
+    ao/sim/directPhaseReconstructor.hpp
+    ao/sim/directPhaseReconstructorOrtho.hpp
+    ao/sim/directPhaseSensor.hpp
+    ao/sim/generalIntegrator.hpp
+    ao/sim/leakyIntegrator.hpp
+    ao/sim/pyramidSensor.hpp
+    ao/sim/pyramidSensorSepQuad.hpp
+    ao/sim/pywfsSlopeReconstructor.hpp
+    ao/sim/simulatedAOSystem.hpp
+    ao/sim/turbAtmosphere.hpp
+    ao/sim/turbLayer.hpp
+    ao/sim/turbSequence.hpp
+    ao/sim/wavefront.hpp
+    ao/sim/wooferTweeterDM.hpp
+    ao/sim/wooferTweeterFilter.hpp
+    ao/sim/wooferTweeterReconstructor.hpp
+    ao/zernikeBasis.hpp
+    app/appConfigurator.hpp
+    app/application.hpp
+    app/clOptions.hpp
+    app/configTarget.hpp
+    app/iniFile.hpp
+    app/inih/ini.c
+    app/inih/ini.h
+    app/inih/LICENSE.txt
+    app/ini.hpp
+    app/inih/README.txt
+    app/optionparser/optionparser.h
+    astro/astroDynamics.hpp
+    astro/astroSpectra.hpp
+    astro/astroSpectrum.hpp
+    astro/blackbody.hpp
+    astro/cahoyAlbedos.hpp
+    astro/constants.hpp
+    astro/kepler.hpp
+    astro/mamajek.inc
+    astro/orbitUtils.hpp
+    astro/phoenixSpectrum.hpp
+    astro/planets.hpp
+    astro/sofa.hpp
+    astro/sofa/sofa.h
+    astro/sofa/sofam.h
+    astro/stars.hpp
+    astro/units.hpp
+    improc/ADIDerotator.hpp
+    improc/ADIobservation.hpp
+    improc/aperturePhotometer.hpp
+    improc/circleOuterpix.hpp
+    improc/eigenCube.hpp
+    improc/eigenImage.hpp
+    improc/HCIobservation.hpp
+    improc/imageFilters.hpp
+    improc/imageMasks.hpp
+    improc/imagePads.hpp
+    improc/imageTransforms.hpp
+    improc/imageUtils.hpp
+    improc/imageXCorrDiscrete.hpp
+    improc/imageXCorrFFT.hpp
+    improc/imCenterCircleSym.hpp
+    improc/improc.hpp
+    improc/KLIPreduction.hpp
+    improc/sourceFinder.hpp
+    ioutils/binVector.hpp
+    ioutils/fileUtils.hpp
+    ioutils/fits/fitsFile.hpp
+    ioutils/fits/fitsHeaderCard.hpp
+    ioutils/fits/fitsHeader.hpp
+    ioutils/fits/fitsUtils.hpp
+    ioutils/ioutils.hpp
+    ioutils/pout.hpp
+    ioutils/rawBinary.hpp
+    ioutils/readColumns.hpp
+    ioutils/stringUtils.hpp
+    ioutils/textTable.hpp
+    ipc/ipc.hpp
+    ipc/ompLoopWatcher.hpp
+    ipc/processInterface.hpp
+    ipc/sharedMemSegment.hpp
+    math/constants.hpp
+    math/cuda/cudaPtr.hpp
+    math/cuda/templateCublas.hpp
+    math/cuda/templateCuda.hpp
+    math/cuda/templateCufft.hpp
+    math/cuda/templateCurand.hpp
+    math/eigenLapack.hpp
+    math/fft/fft.hpp
+    math/fft/fftwEnvironment.hpp
+    math/fft/fftwTemplates.hpp
+    math/fit/array2FitGaussian2D.hpp
+    math/fit/fitAiry.hpp
+    math/fit/fitGaussian.hpp
+    math/fit/fitMoffat.hpp
+    math/fit/levmarInterface.hpp
+    math/fit/templateLevmar.hpp
+    math/func/airyPattern.hpp
+    math/func/bessel.hpp
+    math/func/factorial.hpp
+    math/func/gamma.hpp
+    math/func/gaussian.hpp
+    math/func/jinc.hpp
+    math/func/legendre.hpp
+    math/func/logistic.hpp
+    math/func/moffat.hpp
+    math/func/precision.hpp
+    math/func/sign.hpp
+    math/func/weibull.hpp
+    math/geo.hpp
+    math/gslInterpolation.hpp
+    math/gslInterpolator.hpp
+    math/histogramUniform.hpp
+    math/logInterpolator.hpp
+    math/math.hpp
+    math/plot/gnuPlot.hpp
+    math/radprofIntegral.hpp
+    math/randomSeed.hpp
+    math/randomT.hpp
+    math/roots.hpp
+    math/templateBLAS.hpp
+    math/templateLapack.hpp
+    math/vectorUtils.hpp
+    meta/trueFalseT.hpp
+    meta/typeDescription.hpp
+    meta/typeTraits.hpp
+    mxError.hpp
+    mxException.hpp
+    mxlib.hpp
+    mxlib_uncomp_version.h
+    sigproc/autocorrelation.hpp
+    sigproc/averagePeriodogram.hpp
+    sigproc/basisUtils2D.hpp
+    sigproc/circularBuffer.hpp
+    sigproc/crossCorrelation.hpp
+    sigproc/fourierModes.hpp
+    sigproc/gramSchmidt.hpp
+    sigproc/levinsonRecursion.hpp
+    sigproc/linearPredictor.hpp
+    sigproc/psdFilterCuda.hpp
+    sigproc/psdFilter.hpp
+    sigproc/psdUtils.hpp
+    sigproc/psdVarMean.hpp
+    sigproc/signalWindows.hpp
+    sigproc/zernike.hpp
+    sys/environment.hpp
+    sys/gitRepo.hpp
+    sys/timeUtils.hpp
+    wfp/fraunhoferPropagatorCuda.hpp
+    wfp/fraunhoferPropagator.hpp
+    wfp/idealCoronagraph.hpp
+    wfp/imagingArray.hpp
+    wfp/imagingUtils.hpp
+    wfp/lyotCoronagraph.hpp
 )
 
-target_include_directories(mx PUBLIC include $<TARGET_PROPERTY:MKL::MKL,INTERFACE_INCLUDE_DIRECTORIES>)
+target_include_directories(mx PUBLIC $<TARGET_PROPERTY:MKL::MKL,INTERFACE_INCLUDE_DIRECTORIES>)
 target_link_libraries(mx PRIVATE Eigen3::Eigen $<LINK_ONLY:MKL::MKL>)
+target_compile_options(mx PRIVATE "-fopenmp")
 
-install(TARGETS mx DESTINATION lib)
+install(TARGETS mx 
+    LIBRARY DESTINATION lib
+    FILE_SET HEADERS DESTINATION include/mx    
+)

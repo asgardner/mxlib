@@ -122,9 +122,9 @@ static int nb=0; /* no __STATIC__ decl. here! */
 
 LM_REAL *a, *tau, *r, *work;
 int a_sz, tau_sz, r_sz, tot_sz;
-register int i, j;
+int i, j;
 int info, worksz, nrhs=1;
-register LM_REAL sum;
+LM_REAL sum;
 
     if(!A)
 #ifdef LINSOLVERS_RETAIN_MEMORY
@@ -281,9 +281,9 @@ static int nb=0; /* no __STATIC__ decl. here! */
 
 LM_REAL *a, *tau, *r, *work;
 int a_sz, tau_sz, r_sz, tot_sz;
-register int i, j;
+int i, j;
 int info, worksz, nrhs=1;
-register LM_REAL sum;
+LM_REAL sum;
    
     if(!A)
 #ifdef LINSOLVERS_RETAIN_MEMORY
@@ -741,7 +741,7 @@ __STATIC__ LM_REAL *buf=NULL;
 __STATIC__ int buf_sz=0;
 
 int a_sz, ipiv_sz, tot_sz;
-register int i, j;
+int i, j;
 int info, *ipiv, nrhs=1;
 LM_REAL *a;
    
@@ -858,11 +858,11 @@ __STATIC__ LM_REAL *buf=NULL;
 __STATIC__ int buf_sz=0;
 static LM_REAL eps=LM_CNST(-1.0);
 
-register int i, j;
+int i, j;
 LM_REAL *a, *u, *s, *vt, *work;
 int a_sz, u_sz, s_sz, vt_sz, tot_sz;
 LM_REAL thresh, one_over_denom;
-register LM_REAL sum;
+LM_REAL sum;
 int info, rank, worksz, /**iwork,*/ iworksz;
    
     if(!A)
@@ -1142,7 +1142,7 @@ int AX_EQ_B_LU(LM_REAL *A, LM_REAL *B, LM_REAL *x, int m)
 __STATIC__ void *buf=NULL;
 __STATIC__ int buf_sz=0;
 
-register int i, j, k;
+int i, j, k;
 int *idx, maxi=-1, idx_sz, a_sz, work_sz, tot_sz;
 LM_REAL *a, *work, max, sum, tmp;
 

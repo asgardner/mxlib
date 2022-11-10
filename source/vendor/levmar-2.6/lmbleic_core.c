@@ -66,7 +66,7 @@ static void LMBLEIC_JACF(LM_REAL *pext, LM_REAL *jacext, int mm, int n, void *ad
 {
 struct LMBLEIC_DATA *data=(struct LMBLEIC_DATA *)adata;
 int m;
-register int i, j;
+int i, j;
 LM_REAL *jac, *jacim, *jacextimm;
 
   m=mm-data->nineqcnstr;
@@ -150,8 +150,8 @@ int LEVMAR_BLEIC_DER(
                                                */
   LM_REAL *lbext, *ubext; // corresponding to lb, ub for the full set of variables
   int mm, ret, k12;
-  register int i, j, ii;
-  register LM_REAL tmp;
+  int i, j, ii;
+  LM_REAL tmp;
   LM_REAL locinfo[LM_INFO_SZ];
 
   if(!jacf){
@@ -314,8 +314,8 @@ int LEVMAR_BLEIC_DIF(
                                                */
   LM_REAL *lbext, *ubext; // corresponding to lb, ub for the full set of variables
   int mm, ret, k12;
-  register int i, j, ii;
-  register LM_REAL tmp;
+  int i, j, ii;
+  LM_REAL tmp;
   LM_REAL locinfo[LM_INFO_SZ];
 
   if(!C || !d){
