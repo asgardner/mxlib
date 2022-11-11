@@ -3,11 +3,12 @@ cmake_minimum_required(VERSION 3.23)
 
 find_package(Eigen3 CONFIG REQUIRED)
 find_package(MKL CONFIG REQUIRED)
+find_package(Boost REQUIRED COMPONENTS filesystem)
 
-add_library(mx SHARED)
+add_library(mx STATIC)
 
 target_sources(mx 
-    PRIVATE
+    PUBLIC
     source/ao/analysis/aoAtmosphere.cpp
     source/ao/analysis/aoPSDs.cpp
     source/ao/analysis/aoSystem.cpp
@@ -24,16 +25,286 @@ target_sources(mx
     source/improc/imageUtils.cpp
     source/improc/KLIPreduction.cpp
     source/ioutils/fileUtils.cpp
+    source/ioutils/fits/fitsHeaderCard.cpp
+    source/ioutils/fits/fitsHeader.cpp
+    source/ioutils/fits/fitsUtils.cpp
     source/ioutils/stringUtils.cpp
     source/ioutils/textTable.cpp
     source/ipc/processInterface.cpp
     source/ipc/sharedMemSegment.cpp
+    source/math/fft/fft.cpp
+    source/math/fft/fftwEnvironment.cpp
+    source/math/fft/fftwTemplates.cpp
+    source/math/fit/fitGaussian.cpp
+    source/math/fit/templateLevmar.cpp
+    source/math/func/bessel.cpp
+    source/math/func/factorial.cpp
+    source/math/func/gamma.cpp
+    source/math/func/jinc.cpp
+    source/math/func/legendre.cpp
+    source/math/func/moffat.cpp
+    source/math/func/precision.cpp
+    source/math/func/sign.cpp
+    source/math/plot/gnuPlot.cpp
     source/math/templateBLAS.cpp
     source/math/templateLapack.cpp
+    source/mxError.cpp
+    source/mxlib.cpp
     source/sigproc/zernike.cpp
     source/sys/environment.cpp
     source/sys/gitRepo.cpp
     source/sys/timeUtils.cpp
+    source/vendor/sofa/20210125/c/src/pmsafe.c
+    source/vendor/sofa/20210125/c/src/c2txy.c
+    source/vendor/sofa/20210125/c/src/gmst82.c
+    source/vendor/sofa/20210125/c/src/falp03.c
+    source/vendor/sofa/20210125/c/src/ee00a.c
+    source/vendor/sofa/20210125/c/src/cpv.c
+    source/vendor/sofa/20210125/c/src/tdbtt.c
+    source/vendor/sofa/20210125/c/src/atio13.c
+    source/vendor/sofa/20210125/c/src/eect00.c
+    source/vendor/sofa/20210125/c/src/lteceq.c
+    source/vendor/sofa/20210125/c/src/atciqn.c
+    source/vendor/sofa/20210125/c/src/s06.c
+    source/vendor/sofa/20210125/c/src/s06a.c
+    source/vendor/sofa/20210125/c/src/c2t06a.c
+    source/vendor/sofa/20210125/c/src/atoi13.c
+    source/vendor/sofa/20210125/c/src/utctai.c
+    source/vendor/sofa/20210125/c/src/af2a.c
+    source/vendor/sofa/20210125/c/src/apcs13.c
+    source/vendor/sofa/20210125/c/src/tpxev.c
+    source/vendor/sofa/20210125/c/src/pvstar.c
+    source/vendor/sofa/20210125/c/src/sp00.c
+    source/vendor/sofa/20210125/c/src/gst94.c
+    source/vendor/sofa/20210125/c/src/fk45z.c
+    source/vendor/sofa/20210125/c/src/pv2p.c
+    source/vendor/sofa/20210125/c/src/ld.c
+    source/vendor/sofa/20210125/c/src/ut1tt.c
+    source/vendor/sofa/20210125/c/src/zp.c
+    source/vendor/sofa/20210125/c/src/rxp.c
+    source/vendor/sofa/20210125/c/src/fk425.c
+    source/vendor/sofa/20210125/c/src/fk52h.c
+    source/vendor/sofa/20210125/c/src/fama03.c
+    source/vendor/sofa/20210125/c/src/pvu.c
+    source/vendor/sofa/20210125/c/src/tpors.c
+    source/vendor/sofa/20210125/c/src/atco13.c
+    source/vendor/sofa/20210125/c/src/bp00.c
+    source/vendor/sofa/20210125/c/src/hd2ae.c
+    source/vendor/sofa/20210125/c/src/gst06a.c
+    source/vendor/sofa/20210125/c/src/prec76.c
+    source/vendor/sofa/20210125/c/src/c2ibpn.c
+    source/vendor/sofa/20210125/c/src/pvppv.c
+    source/vendor/sofa/20210125/c/src/pv2s.c
+    source/vendor/sofa/20210125/c/src/s2xpv.c
+    source/vendor/sofa/20210125/c/src/nut80.c
+    source/vendor/sofa/20210125/c/src/hd2pa.c
+    source/vendor/sofa/20210125/c/src/pvup.c
+    source/vendor/sofa/20210125/c/src/tf2a.c
+    source/vendor/sofa/20210125/c/src/xys00b.c
+    source/vendor/sofa/20210125/c/src/sxpv.c
+    source/vendor/sofa/20210125/c/src/num00a.c
+    source/vendor/sofa/20210125/c/src/hfk5z.c
+    source/vendor/sofa/20210125/c/src/jd2cal.c
+    source/vendor/sofa/20210125/c/src/s00b.c
+    source/vendor/sofa/20210125/c/src/apci.c
+    source/vendor/sofa/20210125/c/src/apci13.c
+    source/vendor/sofa/20210125/c/src/pmat00.c
+    source/vendor/sofa/20210125/c/src/aticq.c
+    source/vendor/sofa/20210125/c/src/ltecm.c
+    source/vendor/sofa/20210125/c/src/bp06.c
+    source/vendor/sofa/20210125/c/src/p2pv.c
+    source/vendor/sofa/20210125/c/src/tr.c
+    source/vendor/sofa/20210125/c/src/pvtob.c
+    source/vendor/sofa/20210125/c/src/trxpv.c
+    source/vendor/sofa/20210125/c/src/c2tcio.c
+    source/vendor/sofa/20210125/c/src/pas.c
+    source/vendor/sofa/20210125/c/src/atci13.c
+    source/vendor/sofa/20210125/c/src/taitt.c
+    source/vendor/sofa/20210125/c/src/pvdpv.c
+    source/vendor/sofa/20210125/c/src/gc2gd.c
+    source/vendor/sofa/20210125/c/src/seps.c
+    source/vendor/sofa/20210125/c/src/pnm80.c
+    source/vendor/sofa/20210125/c/src/fave03.c
+    source/vendor/sofa/20210125/c/src/a2af.c
+    source/vendor/sofa/20210125/c/src/dat.c
+    source/vendor/sofa/20210125/c/src/ldn.c
+    source/vendor/sofa/20210125/c/src/a2tf.c
+    source/vendor/sofa/20210125/c/src/gmst00.c
+    source/vendor/sofa/20210125/c/src/bpn2xy.c
+    source/vendor/sofa/20210125/c/src/p2s.c
+    source/vendor/sofa/20210125/c/src/fw2m.c
+    source/vendor/sofa/20210125/c/src/anpm.c
+    source/vendor/sofa/20210125/c/src/fw2xy.c
+    source/vendor/sofa/20210125/c/src/c2s.c
+    source/vendor/sofa/20210125/c/src/nut06a.c
+    source/vendor/sofa/20210125/c/src/eo06a.c
+    source/vendor/sofa/20210125/c/src/atciqz.c
+    source/vendor/sofa/20210125/c/src/cp.c
+    source/vendor/sofa/20210125/c/src/apco13.c
+    source/vendor/sofa/20210125/c/src/icrs2g.c
+    source/vendor/sofa/20210125/c/src/epb.c
+    source/vendor/sofa/20210125/c/src/pvm.c
+    source/vendor/sofa/20210125/c/src/era00.c
+    source/vendor/sofa/20210125/c/src/sepp.c
+    source/vendor/sofa/20210125/c/src/gst06.c
+    source/vendor/sofa/20210125/c/src/h2fk5.c
+    source/vendor/sofa/20210125/c/src/faom03.c
+    source/vendor/sofa/20210125/c/src/cr.c
+    source/vendor/sofa/20210125/c/src/tttai.c
+    source/vendor/sofa/20210125/c/src/ltpecl.c
+    source/vendor/sofa/20210125/c/src/epv00.c
+    source/vendor/sofa/20210125/c/src/eqec06.c
+    source/vendor/sofa/20210125/c/src/fal03.c
+    source/vendor/sofa/20210125/c/src/pn00a.c
+    source/vendor/sofa/20210125/c/src/lteqec.c
+    source/vendor/sofa/20210125/c/src/atioq.c
+    source/vendor/sofa/20210125/c/src/rx.c
+    source/vendor/sofa/20210125/c/src/ut1utc.c
+    source/vendor/sofa/20210125/c/src/ltp.c
+    source/vendor/sofa/20210125/c/src/taiutc.c
+    source/vendor/sofa/20210125/c/src/tcgtt.c
+    source/vendor/sofa/20210125/c/src/faf03.c
+    source/vendor/sofa/20210125/c/src/rz.c
+    source/vendor/sofa/20210125/c/src/tporv.c
+    source/vendor/sofa/20210125/c/src/pn06.c
+    source/vendor/sofa/20210125/c/src/c2i00b.c
+    source/vendor/sofa/20210125/c/src/pvxpv.c
+    source/vendor/sofa/20210125/c/src/starpm.c
+    source/vendor/sofa/20210125/c/src/tttdb.c
+    source/vendor/sofa/20210125/c/src/sxp.c
+    source/vendor/sofa/20210125/c/src/c2ixys.c
+    source/vendor/sofa/20210125/c/src/ee00.c
+    source/vendor/sofa/20210125/c/src/eform.c
+    source/vendor/sofa/20210125/c/src/pmp.c
+    source/vendor/sofa/20210125/c/src/epb2jd.c
+    source/vendor/sofa/20210125/c/src/fk524.c
+    source/vendor/sofa/20210125/c/src/apio.c
+    source/vendor/sofa/20210125/c/src/nut00b.c
+    source/vendor/sofa/20210125/c/src/gd2gc.c
+    source/vendor/sofa/20210125/c/src/gst00a.c
+    source/vendor/sofa/20210125/c/src/numat.c
+    source/vendor/sofa/20210125/c/src/c2i06a.c
+    source/vendor/sofa/20210125/c/src/c2ixy.c
+    source/vendor/sofa/20210125/c/src/pm.c
+    source/vendor/sofa/20210125/c/src/ttut1.c
+    source/vendor/sofa/20210125/c/src/apco.c
+    source/vendor/sofa/20210125/c/src/atic13.c
+    source/vendor/sofa/20210125/c/src/aticqn.c
+    source/vendor/sofa/20210125/c/src/c2t00b.c
+    source/vendor/sofa/20210125/c/src/pmat06.c
+    source/vendor/sofa/20210125/c/src/rxpv.c
+    source/vendor/sofa/20210125/c/src/ltpequ.c
+    source/vendor/sofa/20210125/c/src/tpxes.c
+    source/vendor/sofa/20210125/c/src/rm2v.c
+    source/vendor/sofa/20210125/c/src/atoiq.c
+    source/vendor/sofa/20210125/c/src/pom00.c
+    source/vendor/sofa/20210125/c/src/pmpx.c
+    source/vendor/sofa/20210125/c/src/apio13.c
+    source/vendor/sofa/20210125/c/src/gd2gce.c
+    source/vendor/sofa/20210125/c/src/tpsts.c
+    source/vendor/sofa/20210125/c/src/pap.c
+    source/vendor/sofa/20210125/c/src/ppp.c
+    source/vendor/sofa/20210125/c/src/epj.c
+    source/vendor/sofa/20210125/c/src/tttcg.c
+    source/vendor/sofa/20210125/c/src/zr.c
+    source/vendor/sofa/20210125/c/src/ae2hd.c
+    source/vendor/sofa/20210125/c/src/anp.c
+    source/vendor/sofa/20210125/c/src/aper13.c
+    source/vendor/sofa/20210125/c/src/ir.c
+    source/vendor/sofa/20210125/c/src/trxp.c
+    source/vendor/sofa/20210125/c/src/fk5hz.c
+    source/vendor/sofa/20210125/c/src/atoc13.c
+    source/vendor/sofa/20210125/c/src/nutm80.c
+    source/vendor/sofa/20210125/c/src/num00b.c
+    source/vendor/sofa/20210125/c/src/pnm00b.c
+    source/vendor/sofa/20210125/c/src/num06a.c
+    source/vendor/sofa/20210125/c/src/plan94.c
+    source/vendor/sofa/20210125/c/src/cal2jd.c
+    source/vendor/sofa/20210125/c/src/bi00.c
+    source/vendor/sofa/20210125/c/src/pn06a.c
+    source/vendor/sofa/20210125/c/src/zpv.c
+    source/vendor/sofa/20210125/c/src/s2pv.c
+    source/vendor/sofa/20210125/c/src/pr00.c
+    source/vendor/sofa/20210125/c/src/ecm06.c
+    source/vendor/sofa/20210125/c/src/tf2d.c
+    source/vendor/sofa/20210125/c/src/obl80.c
+    source/vendor/sofa/20210125/c/src/ltpb.c
+    source/vendor/sofa/20210125/c/src/pn00.c
+    source/vendor/sofa/20210125/c/src/ab.c
+    source/vendor/sofa/20210125/c/src/pmat76.c
+    source/vendor/sofa/20210125/c/src/ut1tai.c
+    source/vendor/sofa/20210125/c/src/g2icrs.c
+    source/vendor/sofa/20210125/c/src/pn.c
+    source/vendor/sofa/20210125/c/src/taiut1.c
+    source/vendor/sofa/20210125/c/src/pfw06.c
+    source/vendor/sofa/20210125/c/src/ldsun.c
+    source/vendor/sofa/20210125/c/src/dtf2d.c
+    source/vendor/sofa/20210125/c/src/faju03.c
+    source/vendor/sofa/20210125/c/src/dtdb.c
+    source/vendor/sofa/20210125/c/src/epj2jd.c
+    source/vendor/sofa/20210125/c/src/d2dtf.c
+    source/vendor/sofa/20210125/c/src/atciq.c
+    source/vendor/sofa/20210125/c/src/xy06.c
+    source/vendor/sofa/20210125/c/src/tpstv.c
+    source/vendor/sofa/20210125/c/src/pvmpv.c
+    source/vendor/sofa/20210125/c/src/eqeq94.c
+    source/vendor/sofa/20210125/c/src/pn00b.c
+    source/vendor/sofa/20210125/c/src/c2i00a.c
+    source/vendor/sofa/20210125/c/src/aper.c
+    source/vendor/sofa/20210125/c/src/pxp.c
+    source/vendor/sofa/20210125/c/src/nut00a.c
+    source/vendor/sofa/20210125/c/src/gmst06.c
+    source/vendor/sofa/20210125/c/src/gst00b.c
+    source/vendor/sofa/20210125/c/src/fane03.c
+    source/vendor/sofa/20210125/c/src/faur03.c
+    source/vendor/sofa/20210125/c/src/xys06a.c
+    source/vendor/sofa/20210125/c/src/fad03.c
+    source/vendor/sofa/20210125/c/src/c2teqx.c
+    source/vendor/sofa/20210125/c/src/fame03.c
+    source/vendor/sofa/20210125/c/src/fasa03.c
+    source/vendor/sofa/20210125/c/src/pdp.c
+    source/vendor/sofa/20210125/c/src/refco.c
+    source/vendor/sofa/20210125/c/src/jdcalf.c
+    source/vendor/sofa/20210125/c/src/utcut1.c
+    source/vendor/sofa/20210125/c/src/pnm00a.c
+    source/vendor/sofa/20210125/c/src/ee00b.c
+    source/vendor/sofa/20210125/c/src/ee06a.c
+    source/vendor/sofa/20210125/c/src/pnm06a.c
+    source/vendor/sofa/20210125/c/src/gc2gde.c
+    source/vendor/sofa/20210125/c/src/obl06.c
+    source/vendor/sofa/20210125/c/src/c2tpe.c
+    source/vendor/sofa/20210125/c/src/apcg.c
+    source/vendor/sofa/20210125/c/src/rv2m.c
+    source/vendor/sofa/20210125/c/src/apcs.c
+    source/vendor/sofa/20210125/c/src/fk5hip.c
+    source/vendor/sofa/20210125/c/src/p06e.c
+    source/vendor/sofa/20210125/c/src/fk54z.c
+    source/vendor/sofa/20210125/c/src/eors.c
+    source/vendor/sofa/20210125/c/src/apcg13.c
+    source/vendor/sofa/20210125/c/src/tcbtdb.c
+    source/vendor/sofa/20210125/c/src/ry.c
+    source/vendor/sofa/20210125/c/src/s2p.c
+    source/vendor/sofa/20210125/c/src/fapa03.c
+    source/vendor/sofa/20210125/c/src/starpv.c
+    source/vendor/sofa/20210125/c/src/s00.c
+    source/vendor/sofa/20210125/c/src/s2c.c
+    source/vendor/sofa/20210125/c/src/c2t00a.c
+    source/vendor/sofa/20210125/c/src/d2tf.c
+    source/vendor/sofa/20210125/c/src/tdbtcb.c
+    source/vendor/sofa/20210125/c/src/eceq06.c
+    source/vendor/sofa/20210125/c/src/xys00a.c
+    source/vendor/sofa/20210125/c/src/s00a.c
+    source/vendor/sofa/20210125/c/src/rxr.c
+    source/vendor/sofa/20210125/c/src/ppsp.c
+    source/vendor/sofa/20210125/c/src/fae03.c
+    source/vendor/sofa/20210125/c/src/pb06.c
+    source/vendor/levmar-2.6/lmbc.c
+    source/vendor/levmar-2.6/lm.c
+    source/vendor/levmar-2.6/misc.c
+    source/vendor/levmar-2.6/lmbleic.c
+    source/vendor/levmar-2.6/Axb.c
+    source/vendor/levmar-2.6/lmblec.c
+    source/vendor/levmar-2.6/lmlec.c
     PUBLIC FILE_SET HEADERS FILES
     ao/analysis/aoAtmosphere.hpp
     ao/analysis/aoConstants.hpp
@@ -210,8 +481,8 @@ target_sources(mx
 )
 
 target_include_directories(mx PUBLIC $<TARGET_PROPERTY:MKL::MKL,INTERFACE_INCLUDE_DIRECTORIES>)
-target_link_libraries(mx PRIVATE Eigen3::Eigen $<LINK_ONLY:MKL::MKL>)
-target_compile_options(mx PRIVATE "-fopenmp")
+target_link_libraries(mx PUBLIC Eigen3::Eigen $<LINK_ONLY:MKL::MKL> ${Boost_FILESYSTEM_LIBRARY})
+target_compile_options(mx PUBLIC "-fopenmp")
 
 install(TARGETS mx 
     LIBRARY DESTINATION lib

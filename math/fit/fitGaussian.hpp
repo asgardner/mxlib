@@ -67,7 +67,7 @@ struct gaussian1D_fitter
    
    static const int nparams = 4;
    
-   static void func(realT *p, realT *hx, int m, int n, void *adata)
+   static void func(realT *p, realT *hx, int m __attribute__((unused)), int n __attribute__((unused)), void *adata)
    {
       array2Fit<realT> * arr = (array2Fit<realT> *) adata;
    
@@ -158,7 +158,7 @@ public:
    ///Do the fit.
    int fit()
    {
-      fitterT fitter;
+      fitterT fitter __attribute__((unused));
       
       return levmarInterface<fitterT>::fit();
    }
@@ -486,7 +486,7 @@ struct gaussian2D_sym_fitter
    
    static const int maxNparams = 5;
    
-   static void func(realT *p, realT *hx, int m, int n, void *adata)
+   static void func(realT *p, realT *hx, int m __attribute__((unused)), int n __attribute__((unused)), void *adata)
    {
       array2Fit<realT> * arr = (array2Fit<realT> *) adata;
    
@@ -494,9 +494,9 @@ struct gaussian2D_sym_fitter
 
       idx_dat = 0;
    
-      for(int j=0;j<arr->ny; j++)
+      for(unsigned int j=0;j<arr->ny; j++)
       {
-         for(int i=0;i<arr->nx;i++)
+         for(unsigned int i=0;i<arr->nx;i++)
          { 
             idx_mat = i+j*arr->nx;
    
@@ -509,9 +509,9 @@ struct gaussian2D_sym_fitter
    }
    
    ///Does nothing in this case.
-   void paramNormalizer( array2FitGaussian2D<realT> * arr, 
-                         realT * p, 
-                         int dir
+   void paramNormalizer( array2FitGaussian2D<realT> * arr __attribute__((unused)), 
+                         realT * p __attribute__((unused)), 
+                         int dir __attribute__((unused))
                        )
    {
       return;
@@ -529,7 +529,7 @@ struct gaussian2D_gen_fitter
    
    static const int maxNparams = 7;
    
-   static void func(realT *p, realT *hx, int m, int n, void *adata)
+   static void func(realT *p, realT *hx, int m __attribute__((unused)), int n __attribute__((unused)), void *adata)
    {
       array2FitGaussian2D<realT> * arr = (array2FitGaussian2D<realT> *) adata;
    
@@ -550,9 +550,9 @@ struct gaussian2D_gen_fitter
          //If it's not positive-definite, then we just fill in with the value of the image itself.
          if(arr->mask == nullptr)
          {
-            for(int j=0;j<arr->ny; ++j)
+            for(unsigned int j=0;j<arr->ny; ++j)
             {
-               for(int i=0;i<arr->ny; ++i)
+               for(unsigned int i=0;i<arr->ny; ++i)
                { 
                   idx_mat = i+j*arr->nx;
                   hx[idx_dat] = arr->data[idx_mat];
@@ -562,9 +562,9 @@ struct gaussian2D_gen_fitter
          }
          else
          {
-            for(int j=0;j<arr->ny; ++j)
+            for(unsigned int j=0;j<arr->ny; ++j)
             {
-               for(int i=0;i<arr->ny; ++i)
+               for(unsigned int i=0;i<arr->ny; ++i)
                { 
                   idx_mat = i+j*arr->nx;
                   if(arr->mask[idx_mat]==0) continue;
@@ -582,9 +582,9 @@ struct gaussian2D_gen_fitter
    
       if(arr->mask == nullptr)
       {
-         for(int j=0;j<arr->ny; ++j)
+         for(unsigned int j=0;j<arr->ny; ++j)
          {
-            for(int i=0;i<arr->nx; ++i)
+            for(unsigned int i=0;i<arr->nx; ++i)
             { 
                idx_mat = i+j*arr->nx;
    
@@ -596,9 +596,9 @@ struct gaussian2D_gen_fitter
       }
       else
       {
-         for(int j=0;j<arr->ny; ++j)
+         for(unsigned int j=0;j<arr->ny; ++j)
          {
-            for(int i=0;i<arr->nx; ++i)
+            for(unsigned int i=0;i<arr->nx; ++i)
             { 
                idx_mat = i+j*arr->nx;
                

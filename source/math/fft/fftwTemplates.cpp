@@ -241,19 +241,19 @@ void fftw_make_planner_thread_safe<__float128>()
 #endif
 
 template<>
-void fftw_plan_with_nthreads<float>(int nthreads)
+void fftw_plan_with_nthreads<float>(int nthreads __attribute__((unused)))
 {
    //::fftwf_plan_with_nthreads(nthreads);
 }
 
 template<>
-void fftw_plan_with_nthreads<double>(int nthreads)
+void fftw_plan_with_nthreads<double>(int nthreads __attribute__((unused)))
 {
    //::fftw_plan_with_nthreads(nthreads);
 }
 
 template<>
-void fftw_plan_with_nthreads<long double>(int nthreads)
+void fftw_plan_with_nthreads<long double>(int nthreads __attribute__((unused)))
 {
    //::fftwl_plan_with_nthreads(nthreads);
 }

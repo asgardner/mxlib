@@ -59,7 +59,7 @@ fitsHeaderCard::fitsHeaderCard( const std::string & k,
 }
 
 fitsHeaderCard::fitsHeaderCard( const std::string & k, 
-                                fitsCommentType v,     
+                                fitsCommentType v __attribute__((unused)),     
                                 const std::string & c  
                               )
 {
@@ -71,7 +71,7 @@ fitsHeaderCard::fitsHeaderCard( const std::string & k,
 }
 
 fitsHeaderCard::fitsHeaderCard( const std::string & k, 
-                                fitsHistoryType v,     
+                                fitsHistoryType v __attribute__((unused)),     
                                 const std::string & c  
                               )
 {

@@ -1,3 +1,6 @@
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
+
 ////////////////////////////////////////////////////////////////////////////////////
 //  Example program that shows how to use levmar in order to fit the three-
 //  parameter exponential model x_i = p[0]*exp(-p[1]*i) + p[2] to a set of
@@ -23,7 +26,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include <levmar.h>
+#include "levmar.h"
 
 #ifndef LM_DBL_PREC
 #error Example program assumes that levmar has been compiled with double precision, see LM_DBL_PREC!

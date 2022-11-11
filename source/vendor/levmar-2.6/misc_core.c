@@ -1,3 +1,5 @@
+#pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
+
 /////////////////////////////////////////////////////////////////////////////////
 // 
 //  Levenberg - Marquardt non-linear minimization algorithm

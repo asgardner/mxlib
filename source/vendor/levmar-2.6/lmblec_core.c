@@ -1,3 +1,5 @@
+#pragma GCC diagnostic ignored "-Warray-parameter"
+
 /////////////////////////////////////////////////////////////////////////////////
 // 
 //  Levenberg - Marquardt non-linear minimization algorithm

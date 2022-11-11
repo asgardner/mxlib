@@ -366,6 +366,7 @@ LNSRCH(int m, LM_REAL *x, LM_REAL f, LM_REAL *g, LM_REAL *p, LM_REAL alpha, LM_R
  * the final point. Note also that jac_q=jac_p*D, where jac_q, jac_p are the jacobians w.r.t. q & p, resp.
  */
 
+#pragma GCC diagnostic ignored "-Warray-parameter"
 int LEVMAR_BC_DER(
   void (*func)(LM_REAL *p, LM_REAL *hx, int m, int n, void *adata), /* functional relation describing measurements. A p \in R^m yields a \hat{x} \in  R^n */
   void (*jacf)(LM_REAL *p, LM_REAL *j, int m, int n, void *adata),  /* function to evaluate the Jacobian \part x / \part p */ 
@@ -433,6 +434,7 @@ LM_REAL tmin=LM_CNST(1e-12), tming=LM_CNST(1e-18); /* minimum step length for LS
 const LM_REAL tini=LM_CNST(1.0); /* initial step length for LS and PG steps */
 int nLMsteps=0, nLSsteps=0, nPGsteps=0, gprevtaken=0;
 int numactive;
+#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
 int (*linsolver)(LM_REAL *A, LM_REAL *B, LM_REAL *x, int m);//=NULL;
 
   mu=jacTe_inf=t=0.0;  tmin=tmin; /* -Wall */

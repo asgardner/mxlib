@@ -247,7 +247,7 @@ void gaussian2D_gen2rot( realT & sigma_x, ///< [out] the width parameter in the 
                          const realT c    ///< [in] the the third rotation and scaling parameter
                        )
 {
-   realT x1, x2, s, s2, theta0, theta1;
+   realT x1, x2, s, theta0, theta1;
     
    realT arg = a*a - 2*a*c + 4*b*b + c*c;
    if(arg < 0)

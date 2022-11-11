@@ -392,7 +392,7 @@ int gnuPlot::plotImpl( const void * y,
    
    if(fout == 0) return -1;
    
-   int rv = fwrite(y, 1, Nbytes, fout);
+   unsigned int rv = fwrite(y, 1, Nbytes, fout);
    if(rv != Nbytes)
    {
       std::cerr << "Error writing to temporary file\n";
@@ -441,7 +441,7 @@ int gnuPlot::plotImpl( const void * x,
    if(fout == 0) return -1;
 
    
-   for(int i=0; i< Npts; ++i)
+   for(unsigned int i=0; i< Npts; ++i)
    {
       int rv = fwrite( (char *) x + i*sizex, sizex, 1, fout);
       rv += fwrite( (char *) y + i*sizey, sizey, 1, fout);
