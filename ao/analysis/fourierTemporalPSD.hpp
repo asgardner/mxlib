@@ -1,3 +1,5 @@
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+
 /** \file fourierTemporalPSD.hpp
   * \author Jared R. Males (jaredmales@gmail.com)
   * \brief Calculation of the temporal PSD of Fourier modes.

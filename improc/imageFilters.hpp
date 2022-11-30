@@ -1,3 +1,5 @@
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+
 /** \file imageFilters.hpp
  * \brief Image filters (smoothing, radial profiles, etc.)
  * \ingroup image_processing_files
