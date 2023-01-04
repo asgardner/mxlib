@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.23)
 find_package(Eigen3 CONFIG REQUIRED)
 find_package(MKL CONFIG REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem)
+find_package(cfitsio-unofficial)
 
 add_library(mx STATIC)
 
@@ -480,7 +481,7 @@ target_sources(mx
     wfp/lyotCoronagraph.hpp
 )
 
-target_include_directories(mx PUBLIC $<TARGET_PROPERTY:MKL::MKL,INTERFACE_INCLUDE_DIRECTORIES>)
+target_include_directories(mx PUBLIC $<TARGET_PROPERTY:MKL::MKL,INTERFACE_INCLUDE_DIRECTORIES> ${Boost_INCLUDE_DIRS})
 target_link_libraries(mx PUBLIC Eigen3::Eigen $<LINK_ONLY:MKL::MKL> ${Boost_FILESYSTEM_LIBRARY})
 target_compile_options(mx PUBLIC "-fopenmp")
 
