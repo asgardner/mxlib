@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.23)
 find_package(Eigen3 CONFIG REQUIRED)
 find_package(MKL CONFIG REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem)
-find_package(cfitsio-unofficial)
+find_package(unofficial-cfitsio CONFIG REQUIRED)
 
 add_library(mx STATIC)
 
